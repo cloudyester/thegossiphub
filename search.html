@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-16">
+    <link rel="stylesheet" href="styles.css">
+    <title>Search - The Gossip Hub</title>
+    <style>
+        .search-results-container {
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fff;
+            padding: 10px;
+        }
+        .search-result-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item a {
+            text-decoration: none;
+            color: #333;
+        }
+        .search-result-item a:hover h4 {
+            text-decoration: underline;
+        }
+        .no-results {
+            font-style: italic;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<div class="the_entire_search_area_that_contains_the_box_and_maybe_icons">
+    <div class="the_wrapper_that_contains_search_input_and_icon">
+        <input 
+            type="text" 
+            id="the_search_box_where_the_user_types_the_query" 
+            class="the_actual_search_input_field_that_users_type_in"
+            placeholder="Search anything"
+        >
+        <span class="the_magnifying_glass_icon_inside_the_search_box">&#128269;</span>
+        <button class="search_cancel_button">Cancel</button>
+    </div>
+</div>
+<a href="index.html" class="go_home_button">Go Home</a>
+
+<button id="resetDevMode" style="display:none; position:fixed; top:10px; right:10px; z-index:1000;">Reset Page</button>
+<div id="devEffectsContainer" style="pointer-events:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:999;"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const searchData = [
+        { title: "Home", description: "Welcome to The Gossip Hub homepage.", url: "index.html" },
+        { title: "Skincare Tips", description: "Learn how to take care of your skin effectively.", url: "skincare.html" },
+        { title: "Empowerment", description: "Boost your confidence and personal growth.", url: "empowerment.html" },
+        { title: "Academics", description: "Study tips, subject guides, and academic advice.", url: "academics.html" },
+        { title: "Extra-Curricular", description: "Ideas and tips for extra-curricular activities.", url: "extra-curricular.html" },
+        { title: "Allergies", description: "Understand allergies, symptoms, and precautions.", url: "allergies.html" },
+        { title: "Life Tips", description: "Daily life advice to improve your mindset and habits.", url: "life-tips.html" }
+    ];
+
+    const searchInput = document.getElementById("the_search_box_where_the_user_types_the_query");
+    const resultsContainer = document.createElement("div");
+    resultsContainer.classList.add("search-results-container");
+    document.querySelector(".the_wrapper_that_contains_search_input_and_icon").appendChild(resultsContainer);
+
+    const cancelBtn = document.querySelector(".search_cancel_button");
+
+    function renderResults(filteredData) {
+        resultsContainer.innerHTML = "";
+        if (filteredData.length === 0) {
+            resultsContainer.innerHTML = "<p class='no-results'>No results found.</p>";
+            return;
+        }
+        filteredData.forEach(item => {
+            const resultItem = document.createElement("div");
+            resultItem.classList.add("search-result-item");
+            resultItem.innerHTML = `
+                <a href="${item.url}">
+                    <h4>${item.title}</h4>
+                    <p>${item.description}</p>
+                </a>
+            `;
+            resultsContainer.appendChild(resultItem);
+        });
+    }
+
+    function filterSearch(query) {
+        const lowerQuery = query.toLowerCase().trim();
+        return searchData.filter(item => 
+            item.title.toLowerCase().includes(lowerQuery) ||
+            item.description.toLowerCase().includes(lowerQuery)
+        );
+    }
+
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value;
+        if (!query) {
+            resultsContainer.innerHTML = "";
+            return;
+        }
+        const filtered = filterSearch(query);
+        renderResults(filtered);
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        resultsContainer.innerHTML = "";
+    });
+
+//This part is just an easter egg feature. I had to research online to create it, so this next code is not entirely my own. To activate it, you have to press Control D.
+
+    let devMode = false;
+    const devContainer = document.getElementById('devEffectsContainer');
+    const resetBtn = document.getElementById("resetDevMode");
+
+    const emojis = ["🌈", "💜", "🎉", "✨", "🔮", "🧋", "💔", "❤️‍🩹", "❤️‍🔥","☕️", "🍵", "💖", "💝", "🎀", "🩵","💙","🩷","🤍","🎉","🧃","❔","🖤","🥤","🧊","❄️","🌺","☀️","🌷","🌸","🍁","🦶","😼","🍓","☁️","🌧️","⛅️","🌨️","☔️"];
+
+    function createDevEffect() {
+        const span = document.createElement('span');
+        span.classList.add('devEffectItem');
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.fontSize = (20 + Math.random() * 30) + "px";
+        devContainer.appendChild(span);
+        setTimeout(() => { span.remove(); }, 4000);
+    }
+
+    document.addEventListener("keydown", function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+            e.preventDefault();
+            devMode = !devMode;
+            document.body.classList.toggle("dev-mode", devMode);
+            resetBtn.style.display = devMode ? "block" : "none";
+
+            if(devMode){
+                devInterval = setInterval(createDevEffect, 150);
+            } else {
+                clearInterval(devInterval);
+            }
+        }
+    });
+
+    resetBtn.addEventListener("click", () => {
+        document.body.classList.remove("dev-mode");
+        resetBtn.style.display = "none";
+        clearInterval(devInterval);
+    });
+
+});
+</script>
+</body>
+</html>
