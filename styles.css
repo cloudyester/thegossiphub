@@ -101,11 +101,7 @@ body {
     margin-top: 2rem;
 }
 
-/* ================================
-   CARD CONTAINER - 4 PER ROW
-   ================================ */
-   CARD CONTAINER - 4 PER ROW WITH EQUAL HEIGHTS
-   ================================ */
+
 .the_container_that_holds_all_the_cards_in_this_section {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
