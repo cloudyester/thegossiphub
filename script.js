@@ -147,3 +147,4 @@ document.addEventListener("keydown", function(e) {
         document.querySelectorAll('.devEffectItem').forEach(el => el.remove());
     });
 }
+//i hope this works
