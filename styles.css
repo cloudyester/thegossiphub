@@ -1,6 +1,4 @@
-/* ================================
-   ORIGINAL SITE STYLES (KEEP THESE!)
-   ================================ */
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -106,29 +104,25 @@ body {
 /* ================================
    CARD CONTAINER - 4 PER ROW
    ================================ */
-.the_container_that_holds_all_the_cards_in_this_section {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* ================================
-   RESPONSIVE - TABLETS
+   CARD CONTAINER - 4 PER ROW WITH EQUAL HEIGHTS
    ================================ */
+.the_container_that_holds_all_the_cards_in_this_section {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    align-items: stretch !important; /* Makes all cards in a row the same height */
+}
 @media (max-width: 1024px) {
     .the_container_that_holds_all_the_cards_in_this_section {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
     }
 }
 
-/* ================================
-   RESPONSIVE - MOBILE
-   ================================ */
 @media (max-width: 600px) {
     .the_container_that_holds_all_the_cards_in_this_section {
         grid-template-columns: 1fr;
@@ -138,22 +132,22 @@ body {
 
 /* Fix for cards on pages without images */
 .one_individual_card_that_displays_an_image_and_text {
-    background-color: #F6C1C1;
-    padding: 1.5rem 1.2rem;
-    border-radius: 12px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    min-height: 280px; /* TALLER! */
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    background-color: #F6C1C1 !important;
+    padding: 1.5rem 1rem !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    min-height: 180px !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+    /* 🔥 AUTO HEIGHT - expands to fit content */
 }
-
 .one_individual_card_that_displays_an_image_and_text:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
@@ -171,21 +165,32 @@ body {
     color: #555;
     line-height: 1.5;
 }
-
 .one_individual_card_that_displays_an_image_and_text img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    max-height: 200px;
-    min-height: 150px; /* Ensures images have some height */
-    object-fit: cover;
+    width: 100% !important;
+    border-radius: 10px !important;
+    margin-bottom: 10px !important;
+    height: auto !important; /* 🔥 Natural image height */
+    max-height: none !important; /* 🔥 Remove the height limit */
+    object-fit: contain !important; /* 🔥 Shows the whole image */
+    display: block !important;
 }
+
 
 /* Cards WITH images should be slightly bigger */
 .one_individual_card_that_displays_an_image_and_text:has(img) {
-    min-height: 320px; /* Bigger for image cards! */
-    padding: 1.2rem 1rem;
+    padding: 0.8rem 0.8rem 1.2rem !important;
+    min-height: auto !important; /* 🔥 Let the image determine the height */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important; /* Aligns content to the top */
 }
+
+.one_individual_card_that_displays_an_image_and_text:has(img) h3,
+.one_individual_card_that_displays_an_image_and_text:has(img) p {
+    width: 100% !important;
+    text-align: center !important;
+}
+
 
 /* Cards with expandable content */
 .the_expandable_card {
