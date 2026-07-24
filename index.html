@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-16">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Gossip Hub Online</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Sacramento&family=Roboto&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=10">
+    <link rel="stylesheet" href="styles.css?v=11">
 </head>
 <body>
 
@@ -14,166 +14,167 @@
         <div class="the_logo_text_written_in_pacifico_font">The Gossip Hub</div>
 
         <nav class="the_navigation_menu_that_links_to_all_the_pages">
-<ul class="the_list_of_navigation_links_at_the_top">
-    <li><a href="index.html" style="background-color: #C1F6D9;">Home</a></li>
-    <li><a href="life_tips.html">Life Tips</a></li>
-    <li><a href="skincare.html">Skincare</a></li>
-    <li><a href="empowerment.html">Empowerment</a></li>
-    <li><a href="academics.html">Academics</a></li>
-    <li><a href="extra-curricular.html">Extra-Curricular</a></li>
-    <li><a href="allergies.html">Allergies</a></li>
-    <li><a href="search.html">Search</a></li>
-</ul>
-
+            <ul class="the_list_of_navigation_links_at_the_top">
+                <li><a href="index.html" style="background-color: #C1F6D9;">Home</a></li>
+                <li><a href="life_tips.html">Life Tips</a></li>
+                <li><a href="skincare.html">Skincare</a></li>
+                <li><a href="empowerment.html">Empowerment</a></li>
+                <li><a href="academics.html">Academics</a></li>
+                <li><a href="extra-curricular.html">Extra-Curricular</a></li>
+                <li><a href="allergies.html">Allergies</a></li>
+                <li><a href="search.html">Search</a></li>
+            </ul>
         </nav>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     </header>
-  <canvas id="confetti-canvas"></canvas>
-      <div id="gate-overlay" class="gate-overlay">
-    <div class="gate-card">
-      <div class="sparkle-row">✨🌸✨</div>
-      <h1 class="gate-title">Wait up bestie! 💕</h1>
-      <p class="gate-subtitle">
-        Just gotta make sure you're a real human before you visit <3<br>
-        <span class="gate-small">(bots don't get to see it so the tea doesn't get spilled ☕️✨)</span>
-      </p>
-           <!-- 📊 COUNTERS SECTION -->
-      <div class="counter-section">
-        <div class="counter-item">
-          <span class="counter-emoji">💕</span>
-          <span class="counter-label">Humans let in:</span>
-          <span id="human-counter" class="counter-number">0</span>
-        </div>
-        <div class="counter-divider"></div>
-        <div class="counter-item bot-shame">
-          <span class="counter-emoji">🤖</span>
-          <span class="counter-label">Bots rejected:</span>
-          <span id="bot-counter" class="counter-number">0</span>
-          <span class="counter-sass">😤</span>
-        </div>
-      </div>
-      <div id="captcha-widget"></div>
-      
-      <button id="verify-gate-btn" class="gate-verify-btn">
-        <span class="btn-text">✨ Let me in! ✨</span>
-      </button>
-      
-      <p id="gate-status" class="gate-status"></p>
-      <!-- Progress bar for drama -->
-<div class="gate-progress">
-  <div id="gate-progress-bar" class="gate-progress-bar"></div>
-</div>
-      <div class="gate-footer">
-        <span class="gate-emoji">🌿💜🌸</span>
-      </div>
-    </div>
-  </div>
 
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- GATE -->
+    <div id="gate-overlay" class="gate-overlay">
+        <div class="gate-card">
+            <div class="sparkle-row">✨🌸✨</div>
+            <h1 class="gate-title">Wait up bestie! 💕</h1>
+            <p class="gate-subtitle">
+                Just gotta make sure you're a real human before you visit <3<br>
+                <span class="gate-small">(bots don't get to see it so the tea doesn't get spilled ☕️✨)</span>
+            </p>
+            <div class="counter-section">
+                <div class="counter-item">
+                    <span class="counter-emoji">💕</span>
+                    <span class="counter-label">Humans let in:</span>
+                    <span id="human-counter" class="counter-number">0</span>
+                </div>
+                <div class="counter-divider"></div>
+                <div class="counter-item bot-shame">
+                    <span class="counter-emoji">🤖</span>
+                    <span class="counter-label">Bots rejected:</span>
+                    <span id="bot-counter" class="counter-number">0</span>
+                    <span class="counter-sass">😤</span>
+                </div>
+            </div>
+            <div id="captcha-widget"></div>
+            <button id="verify-gate-btn" class="gate-verify-btn">
+                <span class="btn-text">✨ Let me in! ✨</span>
+            </button>
+            <p id="gate-status" class="gate-status"></p>
+            <div class="gate-progress">
+                <div id="gate-progress-bar" class="gate-progress-bar"></div>
+            </div>
+            <div class="gate-footer">
+                <span class="gate-emoji">🌿💜🌸</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTRO SECTION -->
     <section class="the_large_intro_section_with_the_welcome_title">
         <h1 class="the_big_pacifico_title_in_the_intro_section">
             Welcome To The Gossip Hub Online
         </h1>
-
         <p class="the_small_description_under_the_big_intro_title">
             Life advice, empowerment, and tips for confidence
         </p>
-
         <a href="inspiration.html" class="the_button_in_the_intro_section_meant_for_reading_more">Read More</a>
-
-
         <div class="the_faint_background_text_that_is_purely_decorative">
             The Gossip Hub
         </div>
     </section>
 
+    <!-- MAIN CONTENT -->
     <main class="the_main_content_area_of_the_homepage">
 
+        <!-- LIFE TIPS SECTION -->
         <section class="the_section_for_life_tips_on_the_homepage">
             <h2 class="the_title_for_each_section_written_in_sacramento_font">Life Tips</h2>
 
             <div class="the_container_that_holds_all_the_cards_in_this_section">
+                <!-- Card 1 -->
                 <div class="one_individual_card_that_displays_an_image_and_text">
                     <img src="IMG_8413.jpeg" alt="Inspiration">
-					<!-- New Card 1 -->
-<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Skincare">
-</div>
-
-<!-- New Card 2 -->
-<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Empowerment">
-</div>
-
-<!-- New Card 3 -->
-<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Study Tips">
-</div>
-
-<!-- New Card 4 -->
-<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Self Care">
-
-	</div>
                     <p>Discover tips to boost your confidence every day.</p>
                 </div>
 
+                <!-- Card 2 -->
                 <div class="one_individual_card_that_displays_an_image_and_text">
                     <img src="IMG_8420.jpeg" alt="Collage">
                     <p>Learn practical ways to organize your life and studies.</p>
                 </div>
+
+                <!-- Card 3 -->
+                <div class="one_individual_card_that_displays_an_image_and_text">
+                    <img src="IMG_8413.jpeg" alt="Empowerment">
+                    <p>Find your inner strength and confidence.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="one_individual_card_that_displays_an_image_and_text">
+                    <img src="IMG_8413.jpeg" alt="Study Tips">
+                    <p>Smart strategies for academic success.</p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="one_individual_card_that_displays_an_image_and_text">
+                    <img src="IMG_8413.jpeg" alt="Self Care">
+                    <p>Prioritize your mental and physical wellness.</p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="one_individual_card_that_displays_an_image_and_text">
+                    <img src="IMG_8413.jpeg" alt="Skincare">
+                    <p>Simple routines for healthy skin.</p>
+                </div>
             </div>
         </section>
 
+        <!-- SKINCARE SECTION -->
         <section class="the_section_for_skincare_information_on_the_homepage">
             <h2 class="the_title_for_each_section_written_in_sacramento_font">Skincare Basics</h2>
 
             <div class="the_container_that_holds_all_the_cards_in_this_section">
+                <!-- Card 1 -->
                 <div class="one_individual_card_that_displays_an_image_and_text">
                     <img src="IMG_8425.jpeg" alt="Skincare">
                     <p>Simple routines for healthy skin.</p>
                 </div>
-				<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Skincare">
-</div>
 
-<!-- New Card 2 -->
-<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Empowerment">
-</div>
+                <!-- Card 2 -->
+                <div class="one_individual_card_that_displays_an_image_and_text">
+                    <img src="IMG_8413.jpeg" alt="Empowerment">
+                    <p>Find your inner strength and confidence.</p>
+                </div>
 
-<!-- New Card 3 -->
-<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Study Tips">
-</div>
+                <!-- Card 3 -->
+                <div class="one_individual_card_that_displays_an_image_and_text">
+                    <img src="IMG_8413.jpeg" alt="Study Tips">
+                    <p>Smart strategies for academic success.</p>
+                </div>
 
-<!-- New Card 4 -->
-<div class="one_individual_card_that_displays_an_image_and_text the_expandable_card">
-    <img src="IMG_8413.jpeg" alt="Self Care">
-
-	</div>
+                <!-- Card 4 -->
+                <div class="one_individual_card_that_displays_an_image_and_text">
+                    <img src="IMG_8413.jpeg" alt="Self Care">
+                    <p>Prioritize your mental and physical wellness.</p>
+                </div>
             </div>
         </section>
 
     </main>
 
-<footer class="the_footer_at_the_bottom_with_copyright_text">
-    <p>&copy;  <span id="currentYear"></span> The Gossip Hub Online</p>
-</footer>
+    <!-- FOOTER -->
+    <footer class="the_footer_at_the_bottom_with_copyright_text">
+        <p>&copy; <span id="currentYear"></span> The Gossip Hub Online</p>
+    </footer>
 
-<script>
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-</script>
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
 
-<button id="resetDevMode" style="display:none; position:fixed; top:10px; right:10px; z-index:1000;">Reset Page</button>
-<div id="devEffectsContainer" style="pointer-events:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:999;"></div>
+    <button id="resetDevMode" style="display:none; position:fixed; top:10px; right:10px; z-index:1000;">Reset Page</button>
+    <div id="devEffectsContainer" style="pointer-events:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:999;"></div>
 
-<!-- Confetti Engine -->
-<script src="confetti.js"></script>
+    <script src="confetti.js"></script>
+    <script src="gatekeeper.js"></script>
+    <script src="script.js" defer></script>
 
-<!-- Gatekeeper Logic -->
-<script src="gatekeeper.js"></script>
-<script src="script.js" defer></script>
-
-	
 </body>
 </html>
