@@ -1,522 +1,149 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search - The Gossip Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Sacramento&family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=5">
-    <style>
-        .search-page-wrapper {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+const popup = document.getElementById("tipPopup");
+const saveTip = document.getElementById("saveTip");
+const closePopup = document.getElementById("closePopup");
+const tipTitle = document.getElementById("tipTitle");
+const tipDesc = document.getElementById("tipDesc");
+let currentContainer = null;
+
+document.querySelectorAll(".add-tip-button").forEach(button => {
+    button.addEventListener("click", () => {
+        const containerSelector = button.getAttribute("data-container");
+        currentContainer = document.querySelector(containerSelector);
+
+        if (!currentContainer) {
+            console.error("⚠ Could not find container:", containerSelector);
+            return;
         }
 
-        .search-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        popup.style.display = "flex";
+    });
+});
 
-        .search-header h1 {
-            font-family: 'Pacifico', cursive;
-            font-size: 2.5rem;
-            color: #7a5a8c;
-            margin-bottom: 10px;
-        }
+// Close popup
+closePopup.addEventListener("click", () => {
+    popup.style.display = "none";
+    tipTitle.value = "";
+    tipDesc.value = "";
+    currentContainer = null;
+});
 
-        .search-header p {
-            color: #a082b0;
-            font-size: 1.1rem;
-        }
+// Save tip (create card)
+saveTip.addEventListener("click", () => {
+    const title = tipTitle.value.trim();
+    const desc = tipDesc.value.trim();
 
-        /* Search box wrapper */
-        .the_wrapper_that_contains_search_input_and_icon {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    if (!title || !desc) {
+        alert("Please fill out both fields.");
+        return;
+    }
 
-        /* Search input */
-        .the_actual_search_input_field_that_users_type_in {
-            width: 100%;
-            padding: 16px 50px 16px 20px;
-            border: 2px solid #d4b8e0;
-            border-radius: 30px;
-            font-size: 18px;
-            background: white;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(180, 150, 200, 0.1);
-            font-family: 'Roboto', sans-serif;
-        }
+    if (!currentContainer) {
+        alert("Error: No container selected.");
+        return;
+    }
 
-        .the_actual_search_input_field_that_users_type_in:focus {
-            outline: none;
-            border-color: #f08ca8;
-            box-shadow: 0 4px 20px rgba(240, 140, 168, 0.2);
-            transform: scale(1.02);
-        }
+    // Build new card
+    const newCard = document.createElement("div");
+    newCard.classList.add(
+        "one_individual_card_that_displays_an_image_and_text",
+        "the_expandable_card",
+        "user-added-card"
+    );
 
-        .the_actual_search_input_field_that_users_type_in::placeholder {
-            color: #b0a0b8;
-            font-style: italic;
-        }
-
-        /* Search icon */
-        .the_magnifying_glass_icon_inside_the_search_box {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 22px;
-            color: #b0a0b8;
-            pointer-events: none;
-        }
-
-        /* Cancel button */
-        .search_cancel_button {
-            display: none;
-            margin: 10px auto 0;
-            padding: 8px 20px;
-            background: #e8dff0;
-            border: none;
-            border-radius: 20px;
-            color: #7a5a8c;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .search_cancel_button:hover {
-            background: #d4b8e0;
-        }
-
-        .search_cancel_button.visible {
-            display: block;
-        }
-
-        /* Results container */
-        .search-results-container {
-            margin-top: 20px;
-            max-height: 500px;
-            overflow-y: auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(180, 150, 200, 0.15);
-            padding: 8px;
-            border: 1px solid rgba(212, 184, 224, 0.2);
-        }
-
-        /* Individual result */
-        .search-result-item {
-            padding: 14px 18px;
-            border-bottom: 1px solid #f0ebf5;
-            transition: all 0.2s ease;
-            border-radius: 10px;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-result-item:hover {
-            background: #f8f0ff;
-            transform: translateX(4px);
-        }
-
-        .search-result-item a {
-            text-decoration: none;
-            color: #333;
-            display: block;
-        }
-
-        .search-result-item h4 {
-            font-family: 'Sacramento', cursive;
-            font-size: 1.4rem;
-            margin: 0 0 4px 0;
-            color: #7a5a8c;
-        }
-
-        .search-result-item p {
-            margin: 0;
-            font-size: 0.95rem;
-            color: #777;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .search-result-item .result-tag {
-            display: inline-block;
-            font-size: 0.7rem;
-            background: #d4b8e0;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin-top: 6px;
-            font-weight: 500;
-        }
-
-        /* Highlight matched text */
-        .highlight {
-            background: #f8a4b8;
-            color: white;
-            padding: 0 4px;
-            border-radius: 4px;
-        }
-
-        /* No results */
-        .no-results {
-            text-align: center;
-            padding: 40px 20px;
-            font-style: italic;
-            color: #b0a0b8;
-            font-size: 1.1rem;
-        }
-
-        .no-results span {
-            font-size: 2rem;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* Go home button */
-        .go_home_button {
-            display: inline-block;
-            margin: 20px auto 0;
-            padding: 10px 30px;
-            background: #d4b8e0;
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .go_home_button:hover {
-            background: #c0a0d0;
-            transform: translateY(-2px);
-        }
-
-        .search-footer {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .search-header h1 {
-                font-size: 2rem;
-            }
-            .the_actual_search_input_field_that_users_type_in {
-                font-size: 16px;
-                padding: 14px 45px 14px 16px;
-            }
-            .search-results-container {
-                max-height: 400px;
-            }
-            .search-result-item h4 {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="search-page-wrapper">
-        <!-- Header -->
-        <div class="search-header">
-            <h1>🔍 Search The Gossip Hub</h1>
-            <p>Find articles, tips, and advice 💕</p>
+    newCard.innerHTML = `
+        <div class="user-tip-badge">User Tip</div>
+        <h3>${title}</h3>
+        <p>${desc}</p>
+        <div class="the_hidden_expanded_content">
+            <p>${desc}</p>
         </div>
+        <button class="remove-card-button">Remove</button>
+    `;
 
-        <!-- Search box -->
-        <div class="the_wrapper_that_contains_search_input_and_icon">
-            <input 
-                type="text" 
-                id="the_search_box_where_the_user_types_the_query" 
-                class="the_actual_search_input_field_that_users_type_in"
-                placeholder="Type to search..."
-                autofocus
-            >
-            <span class="the_magnifying_glass_icon_inside_the_search_box">🔍</span>
-            <button class="search_cancel_button" id="cancelSearch">Clear ✕</button>
-        </div>
+    currentContainer.appendChild(newCard);
 
-        <!-- Results -->
-        <div id="resultsContainer" class="search-results-container"></div>
+    popup.style.display = "none";
+    tipTitle.value = "";
+    tipDesc.value = "";
+    currentContainer = null;
+});
 
-        <!-- Footer -->
-        <div class="search-footer">
-            <a href="index.html" class="go_home_button">🏠 Go Home</a>
-        </div>
-    </div>
+document.addEventListener("click", e => {
+    // Expandable card toggle
+    if (e.target.closest(".the_expandable_card") && 
+        !e.target.classList.contains("remove-card-button")) {
+        const card = e.target.closest(".the_expandable_card");
+        card.classList.toggle("open");
+    }
 
-    <!-- Easter egg containers -->
-    <button id="resetDevMode" style="display:none; position:fixed; top:10px; right:10px; z-index:1000;">Reset Page</button>
-    <div id="devEffectsContainer" style="pointer-events:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:999;"></div>
+    // Remove card
+    if (e.target.classList.contains("remove-card-button")) {
+        const card = e.target.closest(".one_individual_card_that_displays_an_image_and_text");
+        card.remove();
+    }
+});
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // ============================================
-            // 📚 SEARCH DATA
-            // ============================================
-            const searchData = [
-                { 
-                    title: "Home", 
-                    description: "Welcome to The Gossip Hub homepage.", 
-                    url: "index.html",
-                    tags: ["home", "welcome"]
-                },
-                { 
-                    title: "Skincare", 
-                    description: "Learn how to take care of your skin effectively with simple routines.", 
-                    url: "skincare.html",
-                    tags: ["skin", "beauty", "routine", "acne", "moisturizer"]
-                },
-                { 
-                    title: "Empowerment", 
-                    description: "Boost your confidence and personal growth.", 
-                    url: "empowerment.html",
-                    tags: ["confidence", "growth", "self-love", "inspiration"]
-                },
-                { 
-                    title: "Academics", 
-                    description: "Study tips, subject guides, and academic advice.", 
-                    url: "academics.html",
-                    tags: ["study", "school", "university", "exam", "revision"]
-                },
-                { 
-                    title: "Extra-Curricular", 
-                    description: "Ideas and tips for extra-curricular activities.", 
-                    url: "extra-curricular.html",
-                    tags: ["activities", "hobbies", "clubs", "sports"]
-                },
-                { 
-                    title: "Allergies", 
-                    description: "Understand allergies, symptoms, and precautions.", 
-                    url: "allergies.html",
-                    tags: ["allergy", "symptoms", "health", "reaction", "food"]
-                },
-                { 
-                    title: "Life Tips", 
-                    description: "Daily life advice to improve your mindset and habits.", 
-                    url: "life_tips.html",
-                    tags: ["life", "advice", "mindset", "habits", "wellness"]
-                },
-                { 
-                    title: "Feminism", 
-                    description: "Empowerment and discussions around feminism.", 
-                    url: "empowerment.html",
-                    tags: ["feminism", "gender", "equality"]
-                },
-                { 
-                    title: "Confidence", 
-                    description: "Tips to build and maintain confidence.", 
-                    url: "life_tips.html",
-                    tags: ["confidence", "self-esteem", "motivation"]
-                }
-            ];
+// ============================================
+// 🎉 EASTER EGG: Ctrl/Cmd + M
+// ============================================
+let devMode = false;
+let devInterval = null; // 🔥 FIXED: declared properly!
+const devContainer = document.getElementById('devEffectsContainer');
+const resetBtn = document.getElementById('resetDevMode');
 
-            // ============================================
-            // 🔍 SEARCH ENGINE
-            // ============================================
-            const searchInput = document.getElementById("the_search_box_where_the_user_types_the_query");
-            const resultsContainer = document.getElementById("resultsContainer");
-            const cancelBtn = document.getElementById("cancelSearch");
+if (devContainer && resetBtn) {
+    const emojis = [
+        "🌈", "💜", "🎉", "✨", "🔮", "🧋", "💔", "❤️‍🩹", "❤️‍🔥",
+        "☕️", "🍵", "💖", "💝", "🎀", "🩵", "💙",
+        "🩷", "🤍", "🎉", "🧃", "❔", "🖤", "🥤",
+        "🧊", "❄️", "🌺", "☀️", "🌷", "🌸", "🍁",
+        "🦶", "😼", "🍓", "☁️", "🌧️", "⛅️", "🌨️", "☔️"
+    ];
 
-            // Highlight matching text
-            function highlightText(text, query) {
-                if (!query) return text;
-                const regex = new RegExp(`(${query})`, 'gi');
-                return text.replace(regex, '<span class="highlight">$1</span>');
+    function createDevEffect() {
+        const span = document.createElement('span');
+        span.classList.add('devEffectItem');
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.fontSize = (20 + Math.random() * 30) + "px";
+        span.style.animationDuration = (3 + Math.random() * 3) + "s"; // Random speed
+        devContainer.appendChild(span);
+        setTimeout(() => { span.remove(); }, 5000);
+    }
+
+    // 🔥 CHANGED: Ctrl/Cmd + M instead of D
+    // 🔥 FIXED: Works with Ctrl+M on Windows AND Cmd+M on Mac!
+document.addEventListener("keydown", function(e) {
+    // Check for Ctrl OR Cmd (metaKey)
+    const isModifierPressed = e.ctrlKey || e.metaKey;
+    const isMKey = e.key === 'm' || e.key === 'M';
+    
+    if (isModifierPressed && isMKey) {
+        e.preventDefault();
+        devMode = !devMode;
+
+        document.body.classList.toggle("dev-mode", devMode);
+        resetBtn.style.display = devMode ? "block" : "none";
+
+        if (devMode) {
+            console.log("🎉 EASTER EGG ACTIVATED! ✨");
+            devInterval = setInterval(createDevEffect, 150);
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createDevEffect, i * 50);
             }
-
-            // Score how well an item matches
-            function getMatchScore(item, query) {
-                const lowerQuery = query.toLowerCase();
-                let score = 0;
-
-                // Title match (highest priority)
-                if (item.title.toLowerCase().includes(lowerQuery)) {
-                    score += 10;
-                    if (item.title.toLowerCase() === lowerQuery) score += 5; // Exact match
-                }
-
-                // Description match
-                if (item.description.toLowerCase().includes(lowerQuery)) {
-                    score += 5;
-                }
-
-                // Tags match
-                if (item.tags) {
-                    item.tags.forEach(tag => {
-                        if (tag.toLowerCase().includes(lowerQuery)) {
-                            score += 3;
-                        }
-                    });
-                }
-
-                return score;
-            }
-
-            // Filter and sort results
-            function filterSearch(query) {
-                const lowerQuery = query.toLowerCase().trim();
-                if (!lowerQuery) return [];
-
-                const results = searchData
-                    .map(item => ({
-                        ...item,
-                        score: getMatchScore(item, lowerQuery)
-                    }))
-                    .filter(item => item.score > 0)
-                    .sort((a, b) => b.score - a.score); // Sort by score descending
-
-                return results;
-            }
-
-            // Render results
-            function renderResults(results, query) {
-                resultsContainer.innerHTML = "";
-
-                if (results.length === 0) {
-                    resultsContainer.innerHTML = `
-                        <div class="no-results">
-                            <span>🔍</span>
-                            No results found for "<strong>${query}</strong>"
-                            <br><small>Try different keywords! 💕</small>
-                        </div>
-                    `;
-                    return;
-                }
-
-                results.forEach(item => {
-                    const resultItem = document.createElement("div");
-                    resultItem.classList.add("search-result-item");
-
-                    const highlightedTitle = highlightText(item.title, query);
-                    const highlightedDesc = highlightText(item.description, query);
-
-                    resultItem.innerHTML = `
-                        <a href="${item.url}">
-                            <h4>${highlightedTitle}</h4>
-                            <p>${highlightedDesc}</p>
-                            ${item.tags ? `<span class="result-tag">${item.tags.slice(0, 2).join(' • ')}</span>` : ''}
-                        </a>
-                    `;
-
-                    resultsContainer.appendChild(resultItem);
-                });
-            }
-
-            // Show/hide cancel button
-            function toggleCancelButton(query) {
-                if (query && query.trim()) {
-                    cancelBtn.classList.add('visible');
-                } else {
-                    cancelBtn.classList.remove('visible');
-                }
-            }
-
-            // ============================================
-            // 🎯 EVENT LISTENERS
-            // ============================================
-            searchInput.addEventListener("input", () => {
-                const query = searchInput.value;
-                toggleCancelButton(query);
-
-                if (!query || !query.trim()) {
-                    resultsContainer.innerHTML = "";
-                    resultsContainer.style.display = 'block';
-                    return;
-                }
-
-                const filtered = filterSearch(query);
-                renderResults(filtered, query.trim());
-                resultsContainer.style.display = 'block';
-            });
-
-            // Clear search on cancel
-            cancelBtn.addEventListener("click", () => {
-                searchInput.value = "";
-                resultsContainer.innerHTML = "";
-                cancelBtn.classList.remove('visible');
-                searchInput.focus();
-            });
-
-            // Close results when clicking outside
-            document.addEventListener("click", (e) => {
-                if (!e.target.closest(".the_wrapper_that_contains_search_input_and_icon")) {
-                    // Don't close, just let it be
-                }
-            });
-
-            // ============================================
-            // 🎉 EASTER EGG: Ctrl/Cmd + M (upgraded!)
-            // ============================================
-            let devMode = false;
-            let devInterval = null;
-            const devContainer = document.getElementById('devEffectsContainer');
-            const resetBtn = document.getElementById("resetDevMode");
-
-            const emojis = [
-                "🌈", "💜", "🎉", "✨", "🔮", "🧋", "💔", "❤️‍🩹", "❤️‍🔥",
-                "☕️", "🍵", "💖", "💝", "🎀", "🩵", "💙",
-                "🩷", "🤍", "🎉", "🧃", "❔", "🖤", "🥤",
-                "🧊", "❄️", "🌺", "☀️", "🌷", "🌸", "🍁",
-                "🦶", "😼", "🍓", "☁️", "🌧️", "⛅️", "🌨️", "☔️"
-            ];
-
-            function createDevEffect() {
-                const span = document.createElement('span');
-                span.classList.add('devEffectItem');
-                span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                span.style.left = Math.random() * 100 + "vw";
-                span.style.fontSize = (20 + Math.random() * 30) + "px";
-                span.style.animationDuration = (3 + Math.random() * 3) + "s";
-                devContainer.appendChild(span);
-                setTimeout(() => { span.remove(); }, 5000);
-            }
-
-            document.addEventListener("keydown", function(e) {
-                const isModifierPressed = e.ctrlKey || e.metaKey;
-                const isMKey = e.key === 'm' || e.key === 'M';
-                
-                if (isModifierPressed && isMKey) {
-                    e.preventDefault();
-                    devMode = !devMode;
-
-                    document.body.classList.toggle("dev-mode", devMode);
-                    resetBtn.style.display = devMode ? "block" : "none";
-
-                    if (devMode) {
-                        console.log("🎉 EASTER EGG ACTIVATED! ✨");
-                        devInterval = setInterval(createDevEffect, 150);
-                        for (let i = 0; i < 10; i++) {
-                            setTimeout(createDevEffect, i * 50);
-                        }
-                    } else {
-                        console.log("😴 Easter egg deactivated.");
-                        clearInterval(devInterval);
-                        devInterval = null;
-                        document.querySelectorAll('.devEffectItem').forEach(el => el.remove());
-                    }
-                }
-            });
-
-            resetBtn.addEventListener("click", () => {
-                document.body.classList.remove("dev-mode");
-                resetBtn.style.display = "none";
-                clearInterval(devInterval);
-                devInterval = null;
-                document.querySelectorAll('.devEffectItem').forEach(el => el.remove());
-            });
-
-            // Auto-focus search on load
-            searchInput.focus();
-        });
-    </script>
-</body>
-</html>
+        } else {
+            console.log("😴 Easter egg deactivated.");
+            clearInterval(devInterval);
+            devInterval = null;
+            document.querySelectorAll('.devEffectItem').forEach(el => el.remove());
+        }
+    }
+});
+    resetBtn.addEventListener("click", () => {
+        document.body.classList.remove("dev-mode");
+        resetBtn.style.display = "none";
+        clearInterval(devInterval);
+        devInterval = null;
+        document.querySelectorAll('.devEffectItem').forEach(el => el.remove());
+    });
+}
