@@ -807,3 +807,26 @@ body {
     justify-content: center;
   }
 }
+/* ================================
+   FOOTER
+   ================================ */
+.the_footer_at_the_bottom_with_copyright_text {
+    background-color: #A3CEF1 !important;
+    text-align: center !important;
+    padding: 1.5rem !important;
+    margin-top: 2rem !important;
+    font-family: 'Roboto', sans-serif !important;
+    color: #333 !important;
+    border-top: 3px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.the_footer_at_the_bottom_with_copyright_text p {
+    margin: 5px 0 !important;
+    font-size: 0.95rem !important;
+}
+
+.the_footer_at_the_bottom_with_copyright_text p:last-child {
+    font-size: 0.85rem !important;
+    opacity: 0.8 !important;
+    color: #555 !important;
+}
