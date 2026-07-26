@@ -228,4 +228,34 @@ document.addEventListener('DOMContentLoaded', function() {
     mainContent.classList.add('hidden');
     initTurnstile();
   }
+    // ============================================
+  // 🤫 SECRET DEV COMBO: Press 'B' 3 times to force bot rejection
+  // ============================================
+  let bKeyPressCount = 0;
+  let bKeyTimeout;
+
+  document.addEventListener('keydown', function(e) {
+    // Check if the key pressed is 'b' or 'B'
+    if (e.key.toLowerCase() === 'b') {
+      bKeyPressCount++;
+      console.log(`🤫 Dev Combo: 'B' pressed ${bKeyPressCount}/3 times`);
+      
+      // Clear the timer so you have to press them close together
+      clearTimeout(bKeyTimeout);
+      
+      // If pressed 3 times, trigger the bot failure!
+      if (bKeyPressCount === 3) {
+        console.log('🚨 Dev Combo triggered! Forcing bot rejection...');
+        rejectBot();
+        bKeyPressCount = 0; // Reset counter
+        return;
+      }
+      
+      // Reset the count if you wait longer than 1 second between presses
+      bKeyTimeout = setTimeout(() => {
+        bKeyPressCount = 0;
+      }, 1000);
+    }
+  });
+
 });
