@@ -228,34 +228,37 @@ document.addEventListener('DOMContentLoaded', function() {
     mainContent.classList.add('hidden');
     initTurnstile();
   }
-    // ============================================
-  // 🤫 SECRET DEV COMBO: Press 'B' 3 times to force bot rejection
   // ============================================
-  let bKeyPressCount = 0;
-  let bKeyTimeout;
+  // 🤫 SECRET DEV CLICK: Click the human counter 3 times to trigger bot mode
+  // ============================================
+  let secretClickCount = 0;
+  let secretClickTimeout;
 
-  document.addEventListener('keydown', function(e) {
-    // Check if the key pressed is 'b' or 'B'
-    if (e.key.toLowerCase() === 'b') {
-      bKeyPressCount++;
-      console.log(`🤫 Dev Combo: 'B' pressed ${bKeyPressCount}/3 times`);
+  // We look for your human counter element
+  const triggerElement = humanCounterEl || humanCounterSiteEl || statusMessage;
+
+  if (triggerElement) {
+    // Make your mouse show a pointer when hovering over it so you know where it is
+    triggerElement.style.cursor = 'pointer'; 
+    
+    triggerElement.addEventListener('click', function() {
+      secretClickCount++;
+      console.log(`🤫 Secret Click: ${secretClickCount}/3`);
       
-      // Clear the timer so you have to press them close together
-      clearTimeout(bKeyTimeout);
+      clearTimeout(secretClickTimeout);
       
-      // If pressed 3 times, trigger the bot failure!
-      if (bKeyPressCount === 3) {
-        console.log('🚨 Dev Combo triggered! Forcing bot rejection...');
+      if (secretClickCount === 3) {
+        console.log('🚨 Secret Combo triggered! Forcing bot rejection...');
         rejectBot();
-        bKeyPressCount = 0; // Reset counter
+        secretClickCount = 0;
         return;
       }
       
-      // Reset the count if you wait longer than 1 second between presses
-      bKeyTimeout = setTimeout(() => {
-        bKeyPressCount = 0;
-      }, 1000);
-    }
-  });
+      // Reset if you take longer than 1.5 seconds between clicks
+      secretClickTimeout = setTimeout(() => {
+        secretClickCount = 0;
+      }, 1500);
+    });
+  }
 
 });
