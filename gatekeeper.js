@@ -228,43 +228,18 @@ document.addEventListener('DOMContentLoaded', function() {
     mainContent.classList.add('hidden');
     initTurnstile();
   }
+   // ============================================
+  // 🤫 CONSOLE OVERRIDE: Type secret commands in your console!
   // ============================================
-  // 🤫 SECRET GATE CARD COMBO: Click the card box 3 times to trigger bot mode
-  // ============================================
-  let secretCardClicks = 0;
-  let secretCardTimeout;
-
-  if (gateCard) {
-    // 💡 Prevent text-selection ghosts on the card box when clicking fast
-    gateCard.style.userSelect = 'none';
-    gateCard.style.webkitUserSelect = 'none';
-
-    gateCard.addEventListener('click', function(e) {
-      // 💡 Crucial: Only trigger if you click the card background, 
-      // NOT when you click the actual Turnstile widget or the main button!
-      if (e.target === verifyButton || e.target.closest('#captcha-widget') || e.target.closest('button')) {
-        return; 
-      }
-
-      e.preventDefault();
-      secretCardClicks++;
-      console.log(`🤫 Secret Card Click: ${secretCardClicks}/3`);
-      
-      clearTimeout(secretCardTimeout);
-      
-      if (secretCardClicks === 3) {
-        console.log('🚨 Secret Card Combo triggered! Forcing bot rejection...');
-        rejectBot();
-        secretCardClicks = 0;
-        return;
-      }
-      
-      // Reset if you take longer than 1.5 seconds between clicks
-      secretCardTimeout = setTimeout(() => {
-        secretCardClicks = 0;
-      }, 1500);
-    });
-  }
+  window.botCheck = function(phrase) {
+    if (phrase === 'I am definitely not a bot 😃') {
+      console.log('🚨 Console code accepted! Slamming the gates into bot mode...');
+      rejectBot();
+      return '💅 Processing your robot energy, bestie!';
+    } else {
+      return '❌ Wrong phrase! Try again.';
+    }
+  };
 
 
 
