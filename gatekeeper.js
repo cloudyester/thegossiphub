@@ -228,43 +228,53 @@ document.addEventListener('DOMContentLoaded', function() {
     mainContent.classList.add('hidden');
     initTurnstile();
   }
+    // ============================================
+  // 🤫 SECRET INVISIBLE BUTTON (Top-Right Corner)
   // ============================================
-  // 🤫 SECRET DEV CLICK: Click the human counter 3 times to trigger bot mode
-  // ============================================
-  let secretClickCount = 0;
-  let secretClickTimeout;
+  // 1. Create a tiny square button
+  const hiddenSecretBtn = document.createElement('div');
+  
+  // 2. Style it to be completely invisible but clickable in the top-right corner
+  hiddenSecretBtn.style.position = 'fixed';
+  hiddenSecretBtn.style.top = '0';
+  hiddenSecretBtn.style.right = '0';
+  hiddenSecretBtn.style.width = '40px';
+  hiddenSecretBtn.style.height = '40px';
+  hiddenSecretBtn.style.zIndex = '99999'; // Keep it on top of everything
+  hiddenSecretBtn.style.backgroundColor = 'transparent'; // Completely invisible
+  hiddenSecretBtn.style.cursor = 'default';
+  
+  // 3. Prevent text selection bugs across the page when clicked fast
+  hiddenSecretBtn.style.userSelect = 'none';
+  hiddenSecretBtn.style.webkitUserSelect = 'none';
 
-  const triggerElements = [humanCounterEl, humanCounterSiteEl].filter(Boolean);
+  // 4. Add the secret 3-click combo logic
+  let secretCornerClicks = 0;
+  let secretCornerTimeout;
 
-  triggerElements.forEach(el => {
-    // 💡 STOP THE BROWSER FROM SELECTING/HIGHLIGHTING THE TEXT
-    el.style.userSelect = 'none';
-    el.style.webkitUserSelect = 'none'; // For Safari/Mac
-    el.style.cursor = 'pointer'; 
+  hiddenSecretBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    secretCornerClicks++;
+    console.log(`🤫 Secret Corner Click: ${secretCornerClicks}/3`);
     
-    el.onmousedown = function(e) {
-      e.preventDefault(); // Prevents selection ghosts
-    };
-
-    el.addEventListener('click', function(e) {
-      e.preventDefault();
-      secretClickCount++;
-      console.log(`🤫 Secret Click: ${secretClickCount}/3`);
-      
-      clearTimeout(secretClickTimeout);
-      
-      if (secretClickCount === 3) {
-        console.log('🚨 Secret Combo triggered! Forcing bot rejection...');
-        rejectBot();
-        secretClickCount = 0;
-        return;
-      }
-      
-      secretClickTimeout = setTimeout(() => {
-        secretClickCount = 0;
-      }, 1500);
-    });
+    clearTimeout(secretCornerTimeout);
+    
+    if (secretCornerClicks === 3) {
+      console.log('🚨 Secret Corner Combo triggered! Forcing bot rejection...');
+      rejectBot();
+      secretCornerClicks = 0;
+      return;
+    }
+    
+    // Reset if you take longer than 1.5 seconds between clicks
+    secretCornerTimeout = setTimeout(() => {
+      secretCornerClicks = 0;
+    }, 1500);
   });
+
+  // 5. Inject the invisible button into your website layout automatically
+  document.body.appendChild(hiddenSecretBtn);
+
 
 
 });
