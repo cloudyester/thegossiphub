@@ -228,52 +228,43 @@ document.addEventListener('DOMContentLoaded', function() {
     mainContent.classList.add('hidden');
     initTurnstile();
   }
-    // ============================================
-  // 🤫 SECRET INVISIBLE BUTTON (Top-Right Corner)
   // ============================================
-  // 1. Create a tiny square button
-  const hiddenSecretBtn = document.createElement('div');
-  
-  // 2. Style it to be completely invisible but clickable in the top-right corner
-  hiddenSecretBtn.style.position = 'fixed';
-  hiddenSecretBtn.style.top = '0';
-  hiddenSecretBtn.style.right = '0';
-  hiddenSecretBtn.style.width = '40px';
-  hiddenSecretBtn.style.height = '40px';
-  hiddenSecretBtn.style.zIndex = '99999'; // Keep it on top of everything
-  hiddenSecretBtn.style.backgroundColor = 'transparent'; // Completely invisible
-  hiddenSecretBtn.style.cursor = 'default';
-  
-  // 3. Prevent text selection bugs across the page when clicked fast
-  hiddenSecretBtn.style.userSelect = 'none';
-  hiddenSecretBtn.style.webkitUserSelect = 'none';
+  // 🤫 SECRET GATE CARD COMBO: Click the card box 3 times to trigger bot mode
+  // ============================================
+  let secretCardClicks = 0;
+  let secretCardTimeout;
 
-  // 4. Add the secret 3-click combo logic
-  let secretCornerClicks = 0;
-  let secretCornerTimeout;
+  if (gateCard) {
+    // 💡 Prevent text-selection ghosts on the card box when clicking fast
+    gateCard.style.userSelect = 'none';
+    gateCard.style.webkitUserSelect = 'none';
 
-  hiddenSecretBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    secretCornerClicks++;
-    console.log(`🤫 Secret Corner Click: ${secretCornerClicks}/3`);
-    
-    clearTimeout(secretCornerTimeout);
-    
-    if (secretCornerClicks === 3) {
-      console.log('🚨 Secret Corner Combo triggered! Forcing bot rejection...');
-      rejectBot();
-      secretCornerClicks = 0;
-      return;
-    }
-    
-    // Reset if you take longer than 1.5 seconds between clicks
-    secretCornerTimeout = setTimeout(() => {
-      secretCornerClicks = 0;
-    }, 1500);
-  });
+    gateCard.addEventListener('click', function(e) {
+      // 💡 Crucial: Only trigger if you click the card background, 
+      // NOT when you click the actual Turnstile widget or the main button!
+      if (e.target === verifyButton || e.target.closest('#captcha-widget') || e.target.closest('button')) {
+        return; 
+      }
 
-  // 5. Inject the invisible button into your website layout automatically
-  document.body.appendChild(hiddenSecretBtn);
+      e.preventDefault();
+      secretCardClicks++;
+      console.log(`🤫 Secret Card Click: ${secretCardClicks}/3`);
+      
+      clearTimeout(secretCardTimeout);
+      
+      if (secretCardClicks === 3) {
+        console.log('🚨 Secret Card Combo triggered! Forcing bot rejection...');
+        rejectBot();
+        secretCardClicks = 0;
+        return;
+      }
+      
+      // Reset if you take longer than 1.5 seconds between clicks
+      secretCardTimeout = setTimeout(() => {
+        secretCardClicks = 0;
+      }, 1500);
+    });
+  }
 
 
 
