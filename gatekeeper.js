@@ -234,14 +234,20 @@ document.addEventListener('DOMContentLoaded', function() {
   let secretClickCount = 0;
   let secretClickTimeout;
 
-  // We look for your human counter element
-  const triggerElement = humanCounterEl || humanCounterSiteEl || statusMessage;
+  const triggerElements = [humanCounterEl, humanCounterSiteEl].filter(Boolean);
 
-  if (triggerElement) {
-    // Make your mouse show a pointer when hovering over it so you know where it is
-    triggerElement.style.cursor = 'pointer'; 
+  triggerElements.forEach(el => {
+    // 💡 STOP THE BROWSER FROM SELECTING/HIGHLIGHTING THE TEXT
+    el.style.userSelect = 'none';
+    el.style.webkitUserSelect = 'none'; // For Safari/Mac
+    el.style.cursor = 'pointer'; 
     
-    triggerElement.addEventListener('click', function() {
+    el.onmousedown = function(e) {
+      e.preventDefault(); // Prevents selection ghosts
+    };
+
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
       secretClickCount++;
       console.log(`🤫 Secret Click: ${secretClickCount}/3`);
       
@@ -254,11 +260,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
       
-      // Reset if you take longer than 1.5 seconds between clicks
       secretClickTimeout = setTimeout(() => {
         secretClickCount = 0;
       }, 1500);
     });
-  }
+  });
+
 
 });
