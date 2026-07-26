@@ -228,19 +228,56 @@ document.addEventListener('DOMContentLoaded', function() {
     mainContent.classList.add('hidden');
     initTurnstile();
   }
-   // ============================================
-  // 🤫 CONSOLE OVERRIDE: Type secret commands in your console!
-  // ============================================
-  window.botCheck = function(phrase) {
-    if (phrase === 'I am definitely not a bot 😃') {
-      console.log('🚨 Console code accepted! Slamming the gates into bot mode...');
-      rejectBot();
-      return '💅 Processing your robot energy, bestie!';
-    } else {
-      return '❌ Wrong phrase! Try again.';
-    }
-  };
-
-
-
 });
+
+// ============================================
+// 🤫 GLOBAL CONSOLE OVERRIDE: OUTSIDE THE ROOM
+// ============================================
+window.smashBot = function() {
+  console.log('🚨 Global override accepted!');
+  
+  // We manually look into the page DOM to trigger the CSS and counters
+  const gateCard = document.querySelector('.gate-card');
+  const progressBar = document.getElementById('gate-progress-bar');
+  const verifyButton = document.getElementById('verify-gate-btn');
+  const statusMessage = document.getElementById('gate-status');
+  
+  // Increment your bot count directly in storage
+  let bots = parseInt(localStorage.getItem('bot_count') || '0');
+  localStorage.setItem('bot_count', (bots + 1).toString());
+  
+  // Update the text counters visible on screen
+  const botCounterEl = document.getElementById('bot-counter');
+  const botCounterSiteEl = document.getElementById('bot-counter-site');
+  if (botCounterEl) botCounterEl.textContent = (bots + 1).toString();
+  if (botCounterSiteEl) botCounterSiteEl.textContent = (bots + 1).toString();
+
+  // Pick a random sassy message
+  const botMessages = [
+    '🤖 Oopsies! I think you\'re a bot.',
+    '😤 You might wanna leave before I hack you 😊',
+    '💅 Bots don\'t get skincare tips, sorry!',
+    '🌿 Ummmmm, you\'re giving major robot energy...',
+    '🌸 This is a safe space for HUMANS only 💕',
+    '😭 Imagine being a bot in 2026... couldn\'t be me.',
+    '✨ Bots stay out! This is for the real ones.',
+    '💀 You\'re giving NPC energy, bestie.',
+    '🎀 Bots aren\'t invited to gossip!',
+    '🌺 A bot? In this economy? Yeah no.',
+  ];
+  const randomMessage = botMessages[Math.floor(Math.random() * botMessages.length)];
+
+  // Slam the UI into beautiful red bot mode!
+  if (verifyButton) verifyButton.classList.add('disabled');
+  if (statusMessage) {
+    statusMessage.textContent = randomMessage;
+    statusMessage.className = 'gate-status bot-rejected';
+  }
+  if (gateCard) gateCard.classList.add('bot-rejected');
+  if (progressBar) {
+    progressBar.classList.add('bot-rejected');
+    progressBar.style.width = '100%';
+  }
+  
+  return '💅 Robot energy located! Gate slammed! 💕';
+};
