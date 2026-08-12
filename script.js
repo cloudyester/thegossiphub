@@ -19,7 +19,6 @@ document.querySelectorAll(".add-tip-button").forEach(button => {
     });
 });
 
-// Close popup
 closePopup.addEventListener("click", () => {
     popup.style.display = "none";
     tipTitle.value = "";
@@ -27,7 +26,6 @@ closePopup.addEventListener("click", () => {
     currentContainer = null;
 });
 
-// Save tip (create card)
 saveTip.addEventListener("click", () => {
     const title = tipTitle.value.trim();
     const desc = tipDesc.value.trim();
@@ -42,7 +40,6 @@ saveTip.addEventListener("click", () => {
         return;
     }
 
-    // Build new card
     const newCard = document.createElement("div");
     newCard.classList.add(
         "one_individual_card_that_displays_an_image_and_text",
@@ -69,23 +66,18 @@ saveTip.addEventListener("click", () => {
 });
 
 document.addEventListener("click", e => {
-    // Expandable card toggle
     if (e.target.closest(".the_expandable_card") && 
         !e.target.classList.contains("remove-card-button")) {
         const card = e.target.closest(".the_expandable_card");
         card.classList.toggle("open");
     }
 
-    // Remove card
     if (e.target.classList.contains("remove-card-button")) {
         const card = e.target.closest(".one_individual_card_that_displays_an_image_and_text");
         card.remove();
     }
 });
 
-// ============================================
-// 🎉 EASTER EGG: Ctrl/Cmd + M
-// ============================================
 let devMode = false;
 let devInterval = null; 
 const devContainer = document.getElementById('devEffectsContainer');
@@ -113,7 +105,6 @@ if (devContainer && resetBtn) {
 
 
 document.addEventListener("keydown", function(e) {
-    // Check for Ctrl OR Cmd (metaKey)
     const isModifierPressed = e.ctrlKey || e.metaKey;
     const isMKey = e.key === 'm' || e.key === 'M';
     
