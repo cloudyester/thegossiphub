@@ -14,14 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
   let isVerified = false;
   let isBotRejected = false;
   let turnstileWidget = null;
-
-  // ===== COUNTERS =====
   function getCounters() {
     let humans = parseInt(localStorage.getItem('human_count') || '0');
     let bots = parseInt(localStorage.getItem('bot_count') || '0');
     return { humans, bots };
   }
-
   function updateCounters() {
     const { humans, bots } = getCounters();
     if (humanCounterEl) humanCounterEl.textContent = humans;
@@ -52,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // ===== BOT REJECTION =====
   const botMessages = [
     '🤖 Oopsies! I think you\'re a bot.',
     '😤 You might wanna leave before I hack you 😊',
@@ -98,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
     statusMessage.className = 'gate-status';
   }
 
-  // ===== OPEN THE GATES =====
   function openTheGates() {
     incrementHumanCount();
     if (typeof confetti !== 'undefined') {
@@ -131,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return false;
   }
 
-  // ===== INIT TURNSTILE =====
   function initTurnstile() {
     console.log('🔧 Initializing Turnstile...');
     if (typeof turnstile === 'undefined') {
@@ -170,9 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ============================================
-  // ✨ PRODUCTION GITHUB PAGES SECURITY SIMULATOR ✨
-  // ============================================
+
   verifyButton.addEventListener('click', function(e) {
     e.preventDefault();
     console.log('🖱️ Button clicked!');
@@ -220,8 +212,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }, 1500);
   });
-
-  // ===== BOOT UP =====
   updateCounters();
   if (!checkExistingVerification()) {
     gateOverlay.classList.remove('hidden');
@@ -229,30 +219,18 @@ document.addEventListener('DOMContentLoaded', function() {
     initTurnstile();
   }
 });
-
-// ============================================
-// 🤫 GLOBAL CONSOLE OVERRIDE: OUTSIDE THE ROOM
-// ============================================
 window.smashBot = function() {
   console.log('🚨 Global override accepted!');
-  
-  // We manually look into the page DOM to trigger the CSS and counters
   const gateCard = document.querySelector('.gate-card');
   const progressBar = document.getElementById('gate-progress-bar');
   const verifyButton = document.getElementById('verify-gate-btn');
   const statusMessage = document.getElementById('gate-status');
-  
-  // Increment your bot count directly in storage
   let bots = parseInt(localStorage.getItem('bot_count') || '0');
   localStorage.setItem('bot_count', (bots + 1).toString());
-  
-  // Update the text counters visible on screen
   const botCounterEl = document.getElementById('bot-counter');
   const botCounterSiteEl = document.getElementById('bot-counter-site');
   if (botCounterEl) botCounterEl.textContent = (bots + 1).toString();
   if (botCounterSiteEl) botCounterSiteEl.textContent = (bots + 1).toString();
-
-  // Pick a random sassy message
   const botMessages = [
     '🤖 Oopsies! I think you\'re a bot.',
     '😤 You might wanna leave before I hack you 😊',
@@ -266,8 +244,6 @@ window.smashBot = function() {
     '🌺 A bot? In this economy? Yeah no.',
   ];
   const randomMessage = botMessages[Math.floor(Math.random() * botMessages.length)];
-
-  // Slam the UI into beautiful red bot mode!
   if (verifyButton) verifyButton.classList.add('disabled');
   if (statusMessage) {
     statusMessage.textContent = randomMessage;
@@ -279,5 +255,5 @@ window.smashBot = function() {
     progressBar.style.width = '100%';
   }
   
-  return '💅 Robot energy located! Gate slammed! 💕';
+  return 'Robot energy found 😃';
 };
