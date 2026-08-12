@@ -87,7 +87,7 @@ document.addEventListener("click", e => {
 // 🎉 EASTER EGG: Ctrl/Cmd + M
 // ============================================
 let devMode = false;
-let devInterval = null; // 🔥 FIXED: declared properly!
+let devInterval = null; 
 const devContainer = document.getElementById('devEffectsContainer');
 const resetBtn = document.getElementById('resetDevMode');
 
@@ -111,8 +111,7 @@ if (devContainer && resetBtn) {
         setTimeout(() => { span.remove(); }, 5000);
     }
 
-    // 🔥 CHANGED: Ctrl/Cmd + M instead of D
-    // 🔥 FIXED: Works with Ctrl+M on Windows AND Cmd+M on Mac!
+
 document.addEventListener("keydown", function(e) {
     // Check for Ctrl OR Cmd (metaKey)
     const isModifierPressed = e.ctrlKey || e.metaKey;
