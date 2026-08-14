@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     turnstileWidget = turnstile.render('#captcha-widget', {
-      sitekey: '0x4AAAAAAD8NDXs0MtNcpoC4', 
+      sitekey: '1x00000000000000000000AA', 
       'refresh-expired': 'auto',  
       callback: function(token) {
         console.log('✅ Turnstile widget solved successfully!');
@@ -179,14 +179,12 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
-    // If they haven't cleared Turnstile yet, start a beautiful loading simulation!
     console.log('🌸 Simulating verification scan...');
     progressBar.style.width = '40%';
     statusMessage.textContent = '🔍 Scanning for robot vibes...';
     statusMessage.className = 'gate-status loading';
     verifyButton.classList.add('disabled');
     
-    // Step 1: Wait 1.5 seconds to make it look official
     setTimeout(() => {
       progressBar.style.width = '75%';
       statusMessage.textContent = '✨ Analysing your energy...';
