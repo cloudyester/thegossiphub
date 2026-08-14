@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     turnstileWidget = turnstile.render('#captcha-widget', {
-      sitekey: '1x00000000000000000000AA', 
+      sitekey: '0x4AAAAAAD8NDXs0MtNcpoC4', 
       'refresh-expired': 'auto',  
       callback: function(token) {
         console.log('✅ Turnstile widget solved successfully!');
